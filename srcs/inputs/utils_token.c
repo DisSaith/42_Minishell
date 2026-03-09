@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 08:59:34 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 10:37:37 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	error_syntax_token(char *token)
 /*
 //Check the syntax of the token struct list before the parsing fonction
 */
-int	check_syntax_token(t_shell *shell, t_token *list)
+int	check_syntax_token(t_token *list)
 {
 	t_token	*cur;
 
@@ -82,8 +82,6 @@ int	check_syntax_token(t_shell *shell, t_token *list)
 		return (error_syntax_token(cur->str));
 	while (cur)
 	{
-		if (cur->type == DELIMITER)
-			shell->nbr_heredocs++;
 		if (cur->type == PIPE && (!cur->next || cur->next->type == PIPE))
 			return (error_syntax_token(cur->str));
 		if (ft_strncmp("||", cur->str, 3) == 0)

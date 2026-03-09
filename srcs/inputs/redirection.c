@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/07 16:40:41 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 12:00:18 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,26 @@ void	error_open(t_shell *shell, char *filename)
 	write(2, "minishell: ", 11);
 	perror(filename);
 	shell->exit_status = 1;
+}
+
+/*
+//Return the good filename to open a temp file for a heredoc
+*/
+char	*get_filename_heredoc(t_shell *shell, int situation)
+{
+	char	*heredoc;
+
+	heredoc = ft_strdup(".heredoc_tmp");
+	if (!heredoc)
+		return (NULL);
+	heredoc = ft_strjoin_expander(heredoc, ft_itoa(shell->nbr_heredocs));
+	if (!heredoc)
+		return (NULL);
+	if (situation == 1)
+		shell->nbr_heredocs++;
+	else
+		shell->nbr_heredocs--;
+	return (heredoc);
 }
 
 /*
@@ -41,8 +61,10 @@ int	open_file_cmd(t_shell *shell, t_token *current, int fd, int is_next)
 		fd = open(current->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else if (is_next == DELIMITER && current->type == WORD)
 	{
-		fd = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		shell->heredoc = get_filename_heredoc(shell, 1);
+		fd = open(shell->heredoc, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		fd = handle_heredoc(shell, current, fd);
+		shell->heredoc = free_str(shell->heredoc);
 	}
 	return (fd);
 }

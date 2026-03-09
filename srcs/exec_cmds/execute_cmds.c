@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 10:23:39 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/07 17:22:33 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 12:10:44 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ int	child_process(t_shell *shell, t_cmd *cmd, int index, int pipe)
 	}
 	if (is_builtin_cmd(cmd->cmd_args[0]) && pipe == YES)
 	{
+		signal(SIGPIPE, SIG_IGN);
 		shell->exit_status = exec_builtin_cmd(shell, cmd, YES);
+		signal(SIGPIPE, SIG_DFL);
 		return (0);
 	}
 	execute_one_cmd(shell, cmd);

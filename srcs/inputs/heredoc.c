@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/07 16:48:41 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 10:55:01 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	heredoc_not_quoted(t_shell *shell, char *delimiter, int fd)
 int	return_fd_heredoc(t_shell *shell)
 {
 	if (shell->exit_status == 0)
-		return (open(".heredoc_tmp", O_RDONLY));
+		return (open(shell->heredoc, O_RDONLY));
 	else
 		return (-1);
 }

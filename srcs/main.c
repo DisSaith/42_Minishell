@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 10:23:39 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/09 08:54:23 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 10:54:24 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	prepare_shell(t_shell *shell, char *envp[])
 	shell->cmds = NULL;
 	shell->current = NULL;
 	shell->nbr_cmds = 0;
-	shell->nbr_heredocs = 0;
+	shell->heredoc = NULL;
+	shell->nbr_heredocs = 1;
 	shell->pid = NULL;
 	shell->pipefd[0] = -2;
 	shell->pipefd[1] = -2;

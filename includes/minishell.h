@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 13:37:21 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/09 08:56:46 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 10:52:03 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_shell
 	char			**envp;
 	char			*prompt;
 	char			*delimiter;
+	char			*heredoc;
 	size_t			exit_status;
 	int				pipefd[2];
 	int				fd_read;
@@ -120,7 +121,7 @@ int			is_redirection(t_token *token);
 int			is_quoted(char *input, size_t idx);
 int			is_separator(char c, int quote);
 int			error_syntax_token(char *token);
-int			check_syntax_token(t_shell *shell, t_token *list);
+int			check_syntax_token(t_token *list);
 //tokenizer_inputs.c
 size_t		strlen_token(char *input, size_t idx);
 char		*remove_quotes(char *str, size_t i, size_t j);
@@ -141,6 +142,7 @@ t_cmd		*create_one_cmd(t_shell *shell, t_token *start_cmd,
 void		error_open(t_shell *shell, char *filename);
 int			open_file_cmd(t_shell *shell, t_token *current,
 				int fd, int is_next);
+char		*get_filename_heredoc(t_shell *shell, int situation);
 int			get_redirection_cmd(t_shell *shell, t_token *current,
 				int *in, int *out);
 //heredoc.c

@@ -6,12 +6,12 @@
 #    By: acohaut <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:02:18 by acohaut           #+#    #+#              #
-#    Updated: 2026/03/06 17:09:17 by acohaut          ###   ########.fr        #
+#    Updated: 2026/03/09 10:45:08 by acohaut          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 NAME		= minishell
 INCLUDES	= -I./includes -I./libft
 

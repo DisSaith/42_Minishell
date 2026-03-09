@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 13:57:17 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/07 17:24:48 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 12:13:28 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	set_signal_exec(void)
 {
 	struct sigaction	act;
 
-	signal(SIGPIPE, SIG_IGN);
 	sigemptyset(&act.sa_mask);
 	act.sa_handler = SIG_DFL;
 	act.sa_flags = 0;

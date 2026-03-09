@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 08:57:02 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 10:39:13 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_cmd	*parsing(t_token *list, t_shell *shell)
 	t_cmd	*new;
 	ssize_t	nbr_args;
 
-	if (!list || check_syntax_token(shell, list) != 1)
+	if (!list || check_syntax_token(list) != 1)
 	{
 		shell->exit_status = 2;
 		return (NULL);

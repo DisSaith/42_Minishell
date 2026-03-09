@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 18:11:30 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/07 16:00:07 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 12:00:54 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,22 @@ void	*free_str(char *str)
 */
 void	free_all(t_shell *shell)
 {
+	char	*heredoc;
+
 	if (shell->pid)
 		free(shell->pid);
 	if (shell->cmds)
 		free_list_cmd(&shell->cmds);
 	if (shell->tokens)
 		free_list_token(&shell->tokens);
-	if (access(".heredoc_tmp", F_OK) == 0)
-		unlink(".heredoc_tmp");
+	while (shell->nbr_heredocs > 0)
+	{
+		shell->nbr_heredocs--;
+		heredoc = get_filename_heredoc(shell, 2);
+		if (access(heredoc, F_OK) == 0)
+			unlink(heredoc);
+		heredoc = free_str(heredoc);
+	}
 }
 
 /*
@@ -76,6 +84,8 @@ void	free_heredoc(t_shell *shell, char *expanded, char *rl)
 		free(expanded);
 	if (shell->delimiter)
 		free(shell->delimiter);
+	if (shell->heredoc)
+		free(shell->heredoc);
 	if (shell->prompt)
 		free(shell->prompt);
 	if (shell->current)

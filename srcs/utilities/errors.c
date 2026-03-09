@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 10:23:44 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/06 13:11:46 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 11:52:31 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 void	error_exit(char *error, t_shell *shell)
 {
 	close_all(shell);
+	free_env(shell, &shell->env);
 	free_all(shell);
 	perror(error);
 	exit(1);

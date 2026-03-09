@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 10:23:39 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/03 13:45:52 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 11:55:45 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ void	redirection_infile(t_shell *shell, t_cmd *cmd)
 	if (dup2(cmd->in, STDIN_FILENO) == -1)
 		error_exit("dup2", shell);
 	close(cmd->in);
-	if (shell->fd_read != STDIN_FILENO)
+	if (shell->fd_read > 2)
+	{
 		close(shell->fd_read);
+		shell->fd_read = STDIN_FILENO;
+	}
 }
 
 /*
