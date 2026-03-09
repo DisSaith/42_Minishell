@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 10:23:39 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/09 12:10:44 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 14:33:39 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	child_process(t_shell *shell, t_cmd *cmd, int index, int pipe)
 	set_signal_exec();
 	if (!redirection_fd(shell, cmd, index == shell->nbr_cmds - 1))
 	{
+		close_all(shell);
 		free_env(shell, &shell->env);
 		free_all(shell);
 		shell->exit_status = 1;
@@ -78,6 +79,7 @@ int	child_process(t_shell *shell, t_cmd *cmd, int index, int pipe)
 		signal(SIGPIPE, SIG_IGN);
 		shell->exit_status = exec_builtin_cmd(shell, cmd, YES);
 		signal(SIGPIPE, SIG_DFL);
+		close_all(shell);
 		return (0);
 	}
 	execute_one_cmd(shell, cmd);
@@ -89,22 +91,20 @@ int	child_process(t_shell *shell, t_cmd *cmd, int index, int pipe)
 */
 int	builtin_process(t_shell *shell, t_cmd *cmd)
 {
-	int	savefd[2];
-
-	savefd[0] = dup(STDIN_FILENO);
-	savefd[1] = dup(STDOUT_FILENO);
+	shell->savefd[0] = dup(STDIN_FILENO);
+	shell->savefd[1] = dup(STDOUT_FILENO);
 	if (!redirection_fd(shell, cmd, YES))
 	{
-		close(savefd[0]);
-		close(savefd[1]);
+		close(shell->savefd[0]);
+		close(shell->savefd[1]);
 		shell->exit_status = 1;
 		return (shell->exit_status);
 	}
 	shell->exit_status = exec_builtin_cmd(shell, cmd, NO);
-	dup2(savefd[0], STDIN_FILENO);
-	dup2(savefd[1], STDOUT_FILENO);
-	close(savefd[0]);
-	close(savefd[1]);
+	dup2(shell->savefd[0], STDIN_FILENO);
+	dup2(shell->savefd[1], STDOUT_FILENO);
+	close(shell->savefd[0]);
+	close(shell->savefd[1]);
 	if (shell->envp)
 		shell->envp = free_tab_tab(shell->envp);
 	shell->envp = ft_env_to_tab(shell->env);
@@ -134,6 +134,7 @@ int	process_cmd(t_shell *shell)
 			exit(shell->exit_status);
 	}
 	waitpid_processes(shell, shell->nbr_cmds);
+	close_all(shell);
 	set_signal_capture();
 	return (shell->exit_status);
 }

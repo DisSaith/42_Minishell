@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 13:57:17 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 11:00:11 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 15:19:55 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	sigint_handler_heredoc(int signal)
 	rl_replace_line("", 0);
 	if (shell)
 	{
+		if (shell->heredocfd > 2)
+			close(shell->heredocfd);
 		if (shell->delimiter)
 			free(shell->delimiter);
 		if (shell->prompt)

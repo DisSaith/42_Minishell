@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 10:23:39 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/07 17:21:41 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 14:22:35 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	proc_cmd_multi_pipe1(t_shell *shell)
 		i++;
 	}
 	waitpid_processes(shell, shell->nbr_cmds);
+	close_all(shell);
 	set_signal_capture();
 	return (shell->exit_status);
 }

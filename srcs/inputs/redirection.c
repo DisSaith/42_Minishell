@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 12:00:18 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 15:23:55 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,13 @@ int	open_file_cmd(t_shell *shell, t_token *current, int fd, int is_next)
 	else if (is_next == DELIMITER && current->type == WORD)
 	{
 		shell->heredoc = get_filename_heredoc(shell, 1);
-		fd = open(shell->heredoc, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		fd = handle_heredoc(shell, current, fd);
+		shell->heredocfd = open(shell->heredoc,
+				O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		shell->heredocfd = handle_heredoc(shell, current, shell->heredocfd);
 		shell->heredoc = free_str(shell->heredoc);
 	}
+	if (shell->heredocfd >= -1)
+		fd = shell->heredocfd;
 	return (fd);
 }
 
@@ -88,7 +91,7 @@ int	get_redirection_cmd(t_shell *shell, t_token *current, int *in, int *out)
 			if (is_next == HERE_IN || is_next == DELIMITER)
 				*in = open_file_cmd(shell, current, *in, is_next);
 			else if (is_next == HERE_OUT || is_next == APPEND)
-				*out = (open_file_cmd(shell, current, *out, is_next));
+				*out = open_file_cmd(shell, current, *out, is_next);
 			if (*in == -1 || *out == -1)
 				return (error_open(shell, current->str), 0);
 			is_next = 0;

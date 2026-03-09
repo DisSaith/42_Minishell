@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 13:37:21 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/09 10:52:03 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 15:03:33 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ typedef struct s_shell
 	char			*heredoc;
 	size_t			exit_status;
 	int				pipefd[2];
+	int				savefd[2];
+	int				heredocfd;
 	int				fd_read;
 	int				nbr_heredocs;
 	int				nbr_cmds;
@@ -134,6 +136,7 @@ size_t		list_add_back_token(t_token **list, t_token *new_elem,
 				char *input, int idx);
 t_token		*create_one_token(t_shell *shell, char *input, size_t idx);
 //list_cmd.c
+void		close_fd_cmd(t_cmd *cmd);
 void		free_list_cmd(t_cmd **list);
 void		list_add_back_cmd(t_cmd **list, t_cmd *new_elem);
 t_cmd		*create_one_cmd(t_shell *shell, t_token *start_cmd,

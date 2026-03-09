@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 10:23:44 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/04 17:45:53 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 13:41:43 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	error_exit_wrong_path(char *cmd_path, t_shell *shell, t_cmd *cmd)
 	write(2, cmd->cmd_args[0], ft_strlen(cmd->cmd_args[0]));
 	write(2, ": command not found\n", 20);
 	free(cmd_path);
+	close_all(shell);
 	free_env(shell, &shell->env);
 	free_all(shell);
 	exit(127);
@@ -63,6 +64,7 @@ void	error_exit_execve_path(char *cmd_path, t_shell *shell, t_cmd *cmd)
 */
 void	error_exit_execve(char *cmd_path, t_shell *shell, t_cmd *cmd)
 {
+	close_all(shell);
 	write(2, "minishell: ", 11);
 	write(2, cmd->cmd_args[0], ft_strlen(cmd->cmd_args[0]));
 	if (ft_strchr(cmd_path, '/'))

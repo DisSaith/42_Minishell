@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 18:11:30 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/09 10:36:39 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 14:27:08 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,14 @@ void	close_all(t_shell *shell)
 			close(current->out);
 		current = current->next;
 	}
-	if (shell->pipefd[0] >= 0)
+	if (shell->pipefd[0] > 2)
 		close(shell->pipefd[0]);
-	if (shell->pipefd[1] >= 0)
+	if (shell->pipefd[1] > 2)
 		close(shell->pipefd[1]);
-	if (shell->fd_read >= 0)
+	if (shell->fd_read > 2)
 		close(shell->fd_read);
+	if (shell->savefd[0] > 2)
+		close(shell->savefd[0]);
+	if (shell->savefd[1] > 2)
+		close(shell->savefd[1]);
 }

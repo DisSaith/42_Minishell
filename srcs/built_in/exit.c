@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:45:33 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/03 10:29:33 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 14:16:10 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,9 @@ void	perror_ft_exit(t_shell *shell, t_cmd *cmd, int pipe)
 	if (pipe)
 		return ;
 	shell->exit_status = 2;
-	free_all(shell);
+	close_all(shell);
 	free_env(shell, &shell->env);
+	free_all(shell);
 	exit(shell->exit_status);
 }
 
@@ -110,8 +111,9 @@ size_t	ft_exit(t_shell *shell, t_cmd *cmd, int pipe)
 		return (write(2, "minishell: exit: too many arguments\n", 36), 1);
 	if (pipe)
 		return (shell->exit_status);
-	free_all(shell);
+	close_all(shell);
 	free_env(shell, &shell->env);
+	free_all(shell);
 	write(1, "exit\n", 5);
 	exit(shell->exit_status);
 	return (shell->exit_status);

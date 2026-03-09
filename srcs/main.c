@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 10:23:39 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/09 10:54:24 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 15:03:22 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ void	prepare_shell(t_shell *shell, char *envp[])
 	shell->pid = NULL;
 	shell->pipefd[0] = -2;
 	shell->pipefd[1] = -2;
+	shell->savefd[0] = -2;
+	shell->savefd[1] = -2;
+	shell->heredocfd = -2;
 	shell->fd_read = STDIN_FILENO;
 }
 
@@ -71,8 +74,10 @@ int	main(int ac, char **av, char *envp[])
 		else if (result_get_inputs == 0)
 			continue ;
 		shell.exit_status = process_cmd(&shell);
+		close_all(&shell);
 		free_all(&shell);
 	}
 	rl_clear_history();
-	return (free_all(&shell), free_env(&shell, &shell.env), shell.exit_status);
+	return (close_all(&shell), free_all(&shell),
+		free_env(&shell, &shell.env), shell.exit_status);
 }
