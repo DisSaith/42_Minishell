@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 15:23:55 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 15:48:58 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ int	open_file_cmd(t_shell *shell, t_token *current, int fd, int is_next)
 		shell->heredoc = free_str(shell->heredoc);
 	}
 	if (shell->heredocfd >= -1)
+	{
 		fd = shell->heredocfd;
+		shell->heredocfd = -2;
+	}
 	return (fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 18:11:30 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/09 14:15:04 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 15:48:14 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ void	free_all(t_shell *shell)
 		free_list_cmd(&shell->cmds);
 	if (shell->tokens)
 		free_list_token(&shell->tokens);
+	shell->nbr_heredocs--;
 	while (shell->nbr_heredocs > 0)
 	{
-		shell->nbr_heredocs--;
 		heredoc = get_filename_heredoc(shell, 2);
 		if (access(heredoc, F_OK) == 0)
 			unlink(heredoc);

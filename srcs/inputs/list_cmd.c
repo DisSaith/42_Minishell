@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 14:58:31 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 15:41:48 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ void	list_add_back_cmd(t_cmd **list, t_cmd *new_elem)
 	current->next = new_elem;
 }
 
+/*
+//Close FDs's cmds
+*/
 void	close_fd_cmd(t_cmd *cmd)
 {
 	if (cmd->in > 2)
