@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 15:48:58 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/09 16:24:45 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,24 @@
 */
 void	error_open(t_shell *shell, char *filename)
 {
+	DIR	*dir;
+
 	if (!filename || shell->exit_status == 130)
 		return ;
 	write(2, "minishell: ", 11);
-	perror(filename);
+	write(2, filename, ft_strlen(filename));
+	dir = opendir(filename);
+	if (dir)
+	{
+		write(2, ": Is a directory\n", 17);
+		closedir(dir);
+		shell->exit_status = 1;
+		return ;
+	}
+	if (access(filename, F_OK) != 0)
+		write(2, ": No such file or directory\n", 28);
+	else
+		write(2, ": Permission denied\n", 20);
 	shell->exit_status = 1;
 }
 
