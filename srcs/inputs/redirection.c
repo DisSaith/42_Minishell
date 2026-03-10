@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 16:24:45 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 16:21:47 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ int	open_file_cmd(t_shell *shell, t_token *current, int fd, int is_next)
 	if (fd > 2)
 		close(fd);
 	if (is_next == HERE_IN && current->type == WORD)
-		fd = open(current->str, O_RDONLY);
+		fd = open(rest_sp(current->str), O_RDONLY);
 	else if (is_next == HERE_OUT && current->type == WORD)
-		fd = open(current->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		fd = open(rest_sp(current->str), O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (is_next == APPEND && current->type == WORD)
-		fd = open(current->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		fd = open(rest_sp(current->str), O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else if (is_next == DELIMITER && current->type == WORD)
 	{
 		shell->heredoc = get_filename_heredoc(shell, 1);

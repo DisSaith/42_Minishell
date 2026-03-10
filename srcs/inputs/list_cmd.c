@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 15:41:48 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 16:28:57 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_cmd	*create_one_cmd(t_shell *shell, t_token *start_cmd, size_t nbr_args)
 	new->cmd_args = malloc(sizeof(char *) * (nbr_args + 1));
 	if (!new->cmd_args)
 		return (close_fd_cmd(new), free(new), NULL);
-	if (!fill_cmd_args(start_cmd, new->cmd_args, nbr_args))
+	if (!fill_cmd_args(start_cmd, new->cmd_args))
 		return (close_fd_cmd(new), free_tab_tab(new->cmd_args),
 			free(new), NULL);
 	return (new);

@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/06 16:49:56 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 14:56:06 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ t_token	*create_one_token(t_shell *shell, char *input, size_t idx)
 	tmp = expander(shell, new->str);
 	free(new->str);
 	new->str = tmp;
-	new->state = get_state_token(input[idx], is_quoted(input, idx));
 	new->str = remove_quotes(new->str, 0, 0);
+	new->state = get_state_token(input[idx], is_quoted(input, idx));
 	if (new->state == GENERAL)
 		new->type = get_type_token(new->str);
 	else

@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 13:37:21 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/10 10:35:24 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 16:39:53 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ int			error_syntax_token(char *token);
 int			check_syntax_token(t_token *list);
 //tokenizer_inputs.c
 size_t		strlen_token(char *input, size_t idx);
-char		*remove_quotes(char *str, size_t i, size_t j);
 t_tok_type	get_type_token(char *str);
 t_tok_state	get_state_token(char c, int quoted);
 t_token		*tokenizer(t_shell *shell, size_t i, char *input, t_token **list);
@@ -158,17 +157,22 @@ void		heredoc_not_quoted(t_shell *shell, char *delimiter, int fd);
 int			handle_heredoc(t_shell *shell, t_token *current, int fd);
 //expander.c
 char		*get_env_node_content(t_shell *shell, t_env *env, char *name);
-char		*check_is_is_vat_env(t_shell *shell, char *str, size_t *i);
+char		*get_env_content_nospaces(t_shell *shell, t_env *env, char *name);
+char		*check_if_is_var_env(t_shell *shell, char *str,
+				size_t *i, int quoted);
 char		*expander2(t_shell *shell, char *str, char *cmd_arg, char *tmp);
 char		*expander(t_shell *shell, char *str);
 //utils_expander.c
 char		*ft_strjoin_expander(char *s1, char *s2);
+char		*ft_strdup_nospaces(char *str);
+char		*protect_spaces(char *str);
 void		init_struct_expander(t_expander *x);
 int			is_var_char(char c);
 //parser_inputs.c
 int			count_nbr_cmds(t_shell *shell);
-size_t		get_nbr_args_one_cmd(t_token *start_cmd);
-int			fill_cmd_args(t_token *start_cmd, char **cmd_args, size_t nbr_args);
+size_t		get_nbr_args_one_cmd(t_token *start_cmd, size_t count);
+char		*rest_sp(char *str);
+int			fill_cmd_args(t_token *start_cmd, char **cmd_args);
 t_cmd		*parsing(t_token *list, t_shell *shell);
 
 /***************EXEC_CMDS***************/
@@ -211,6 +215,8 @@ void		free_heredoc(t_shell *shell, char *expanded, char *rl);
 //utils_minishell.c
 t_shell		*get_shell_ptr(t_shell *ptr);
 char		*strjoin_minishell(char *s1, char *s2, size_t n);
+char		*remove_quotes2(char *str, size_t i, size_t j, char *new_str);
+char		*remove_quotes(char *str, size_t i, size_t j);
 void		close_all(t_shell *shell);
 
 /*****************SIGNAL******************/

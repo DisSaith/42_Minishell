@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 18:11:30 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/09 14:27:08 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 16:39:48 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,52 @@ void	close_all(t_shell *shell)
 		close(shell->savefd[0]);
 	if (shell->savefd[1] > 2)
 		close(shell->savefd[1]);
+}
+
+/*
+//(part 2)Remove quotes in tokens
+*/
+char	*remove_quotes2(char *str, size_t i, size_t j, char *new_str)
+{
+	char	quote;
+
+	quote = 0;
+	while (str[i])
+	{
+		if ((str[i] == '\'' || str[i] == '\"') && !quote)
+			quote = str[i++];
+		else if (quote && str[i] == quote)
+		{
+			quote = 0;
+			i++;
+		}
+		else
+		{
+			if (quote && str[i] == ' ')
+			{
+				new_str[j++] = '\1';
+				i++;
+			}
+			else
+				new_str[j++] = str[i++];
+		}
+	}
+	new_str[j] = '\0';
+	return (new_str);
+}
+
+/*
+//(part 1)Remove quotes in tokens
+*/
+char	*remove_quotes(char *str, size_t i, size_t j)
+{
+	char	*new;
+
+	if (!str)
+		return (NULL);
+	new = malloc(ft_strlen(str) + 1);
+	if (!new)
+		return (NULL);
+	new = remove_quotes2(str, i, j, new);
+	return (free(str), new);
 }

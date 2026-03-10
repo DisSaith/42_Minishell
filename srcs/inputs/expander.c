@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/07 14:35:00 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 15:53:05 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,33 @@ char	*get_env_node_content(t_shell *shell, t_env *env, char *name)
 			return (str);
 		}
 		if (ft_strcmp(env->name, name) == 0)
-			return (ft_strdup(env->content));
+			return (protect_spaces(ft_strdup(env->content)));
+		env = env->next;
+	}
+	return (NULL);
+}
+
+/*
+//Searchs a var env_node and return his content without spaces (or NULL)
+*/
+char	*get_env_content_nospaces(t_shell *shell, t_env *env, char *name)
+{
+	char	*str;
+
+	if (!env || !name)
+		return (NULL);
+	str = NULL;
+	while (env)
+	{
+		if (ft_strncmp("?", name, 1) == 0)
+		{
+			str = ft_itoa(shell->exit_status);
+			if (ft_strlen(name) > 1)
+				str = ft_strjoin_gnl(str, name + 1);
+			return (str);
+		}
+		if (ft_strcmp(env->name, name) == 0)
+			return (ft_strdup_nospaces(env->content));
 		env = env->next;
 	}
 	return (NULL);
@@ -41,7 +67,7 @@ char	*get_env_node_content(t_shell *shell, t_env *env, char *name)
 /*
 //Returns the content of the env variable if she exists
 */
-char	*check_if_is_var_env(t_shell *shell, char *str, size_t *i)
+char	*check_if_is_var_env(t_shell *shell, char *str, size_t *i, int quoted)
 {
 	char	*env_content;
 	char	*var;
@@ -55,7 +81,10 @@ char	*check_if_is_var_env(t_shell *shell, char *str, size_t *i)
 	var = ft_strndup(&str[start], *i - start);
 	if (!var)
 		return (NULL);
-	env_content = get_env_node_content(shell, shell->env, var);
+	if (quoted)
+		env_content = get_env_node_content(shell, shell->env, var);
+	else
+		env_content = get_env_content_nospaces(shell, shell->env, var);
 	free(var);
 	if (!env_content)
 		return (ft_strdup(""));
@@ -82,7 +111,7 @@ char	*expander2(t_shell *shell, char *str, char *cmd_arg, char *tmp)
 			tmp = ft_strndup(&str[x.start], x.i - x.start);
 			cmd_arg = ft_strjoin_expander(cmd_arg, tmp);
 			x.i++;
-			tmp = check_if_is_var_env(shell, str, &x.i);
+			tmp = check_if_is_var_env(shell, str, &x.i, x.quote);
 			cmd_arg = ft_strjoin_expander(cmd_arg, tmp);
 			x.start = x.i;
 		}

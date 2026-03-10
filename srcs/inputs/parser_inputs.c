@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/09 10:39:13 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 16:27:22 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,56 +35,77 @@ int	count_nbr_cmds(t_shell *shell)
 /*
 //Count and return the number of arguments for one command
 */
-size_t	get_nbr_args_one_cmd(t_token *start_cmd)
+size_t	get_nbr_args_one_cmd(t_token *start_cmd, size_t count)
 {
 	t_token	*current;
-	size_t	i;
-	size_t	skip_next;
+	char	**tmp_split;
+	int		j;
 
-	if (!start_cmd)
-		return (0);
 	current = start_cmd;
-	i = 0;
-	skip_next = 0;
 	while (current && current->type != PIPE)
 	{
 		if (is_redirection(current))
-			skip_next = 1;
-		if (current->type == WORD && !skip_next)
-			i++;
-		else if (current->type == WORD && skip_next)
-			skip_next = 0;
-		current = current->next;
+			current = current->next;
+		else if (current->type == WORD)
+		{
+			tmp_split = ft_split(current->str, ' ');
+			j = 0;
+			while (tmp_split && tmp_split[j])
+			{
+				count++;
+				free(tmp_split[j++]);
+			}
+			free(tmp_split);
+		}
+		if (current)
+			current = current->next;
 	}
-	return (i);
+	return (count);
+}
+
+/*
+//Restore spaces
+*/
+char	*rest_sp(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] == '\1')
+			str[i] = ' ';
+		i++;
+	}
+	return (str);
 }
 
 /*
 //Fill char **cmd_args of one node of cmd the struct list
 */
-int	fill_cmd_args(t_token *start_cmd, char **cmd_args, size_t nbr_args)
+int	fill_cmd_args(t_token *start_cmd, char **cmd_args)
 {
 	size_t	i;
-	int		skip_next;
+	int		j;
+	char	**split_res;
 
-	if (!start_cmd)
-		return (0);
 	i = 0;
-	skip_next = 0;
-	while (i < nbr_args && start_cmd && start_cmd->type != PIPE)
+	while (start_cmd && start_cmd->type != PIPE)
 	{
 		if (is_redirection(start_cmd))
-			skip_next = 1;
-		if (start_cmd->type == WORD && !skip_next)
+			start_cmd = start_cmd->next;
+		else if (start_cmd->type == WORD)
 		{
-			cmd_args[i] = ft_strdup(start_cmd->str);
-			if (!cmd_args[i])
-				return (0);
-			i++;
+			split_res = ft_split(start_cmd->str, ' ');
+			j = 0;
+			while (split_res && split_res[j])
+			{
+				cmd_args[i++] = rest_sp(split_res[j++]);
+			}
+			free(split_res);
 		}
-		else if (start_cmd->type == WORD && skip_next)
-			skip_next = 0;
-		start_cmd = start_cmd->next;
+		if (start_cmd)
+			start_cmd = start_cmd->next;
 	}
 	cmd_args[i] = NULL;
 	return (1);
@@ -109,7 +130,7 @@ t_cmd	*parsing(t_token *list, t_shell *shell)
 	while (current)
 	{
 		start_cmd = current;
-		nbr_args = get_nbr_args_one_cmd(start_cmd);
+		nbr_args = get_nbr_args_one_cmd(start_cmd, 0);
 		while (current && current->type != PIPE)
 			current = current->next;
 		new = create_one_cmd(shell, start_cmd, nbr_args);

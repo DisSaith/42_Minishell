@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 09:30:04 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/06 13:18:44 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 14:12:48 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ t_env	*ft_env_lstnew(char *str)
 	if (str[i] == '=')
 	{
 		i++;
-		while (ft_isspace(str[i]))
-			i++;
 		new_node->content = ft_strdup(str + i);
 		if (!new_node->content)
 			return (free(new_node->name), free(new_node), NULL);

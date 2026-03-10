@@ -6,7 +6,7 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:13:11 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/06 15:47:39 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 16:40:21 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,36 +40,6 @@ size_t	strlen_token(char *input, size_t idx)
 		len++;
 	}
 	return (len);
-}
-
-/*
-//Remove quotes in tokens
-*/
-char	*remove_quotes(char *str, size_t i, size_t j)
-{
-	char	*new;
-	char	quote;
-
-	if (!str)
-		return (NULL);
-	new = malloc(ft_strlen(str) + 1);
-	if (!new)
-		return (NULL);
-	quote = 0;
-	while (str[i])
-	{
-		if ((str[i] == '\'' || str[i] == '\"') && !quote)
-			quote = str[i++];
-		else if (quote && str[i] == quote)
-		{
-			quote = 0;
-			i++;
-		}
-		else
-			new[j++] = str[i++];
-	}
-	new[j] = '\0';
-	return (free(str), new);
 }
 
 /*
