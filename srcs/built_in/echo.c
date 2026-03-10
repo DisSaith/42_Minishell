@@ -6,18 +6,40 @@
 /*   By: nofelten <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:45:33 by nofelten          #+#    #+#             */
-/*   Updated: 2026/03/03 14:30:54 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 10:34:46 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*
+//Function to check if the flag -n for builtin echo is right of not
+*/
+int	check_flag_echo(char *flag)
+{
+	size_t	i;
+
+	if (!flag)
+		return (0);
+	i = 0;
+	if (flag[i] == '-')
+		i++;
+	else
+		return (0);
+	while (flag && flag[i] == 'n')
+		i++;
+	if (flag[i] == '\0')
+		return (1);
+	else
+		return (0);
+}
+
+/*
 //(part 2) Built-in echo function -> handles flag -n or multi args
 */
 int	execute_echo(t_cmd *cmd, int i)
 {
-	if (ft_strncmp("-n", cmd->cmd_args[i], 3) == 0)
+	if (check_flag_echo(cmd->cmd_args[i]))
 	{
 		while (cmd->cmd_args[i])
 		{

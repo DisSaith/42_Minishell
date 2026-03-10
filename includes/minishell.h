@@ -6,7 +6,7 @@
 /*   By: acohaut <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 13:37:21 by acohaut           #+#    #+#             */
-/*   Updated: 2026/03/09 15:03:33 by acohaut          ###   ########.fr       */
+/*   Updated: 2026/03/10 10:35:24 by acohaut          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,6 +233,7 @@ int			get_exit_status(char *arg, int argc, t_shell *shell);
 void		perror_ft_exit(t_shell *shell, t_cmd *cmd, int pipe);
 size_t		ft_exit(t_shell *shell, t_cmd *cmd, int pipe);
 //echo.c
+int			check_flag_echo(char *flag);
 int			execute_echo(t_cmd *cmd, int i);
 int			echo(t_cmd *cmd);
 //cd.c
